@@ -16,6 +16,7 @@ WHERE
   action = 'open'
   AND next_action = 'close'
   AND session_end IS NOT NULL
-  AND session_start >= TIMESTAMP_SUB((SELECT MAX(timestamp_action) FROM `data.task_1`), INTERVAL 10 DAY)
+  -- Проблема з 10 днем пофікшена
+  AND DATE(session_start) >= DATE_SUB(DATE((SELECT MAX(timestamp_action) FROM `data.task_1`)), INTERVAL 9 DAY)
 GROUP BY id_user, session_date
 ORDER BY id_user, session_date;
