@@ -10,6 +10,7 @@ FROM (
     , LEAD(timestamp_action) OVER (PARTITION BY id_user ORDER BY timestamp_action) AS session_end
     , LEAD(action) OVER(PARTITION BY id_user ORDER BY timestamp_action) AS next_action
   FROM `data.task_1`
+  WHERE timestamp_action >= TIMESTAMP_SUB((SELECT MAX(timestamp_action) FROM `data.task_1`), INTERVAL 11 DAY)
 )
 WHERE
   action = 'open'
