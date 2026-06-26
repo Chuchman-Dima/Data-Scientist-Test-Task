@@ -8,11 +8,13 @@ FROM (
     , action
     , timestamp_action AS session_start
     , LEAD(timestamp_action) OVER (PARTITION BY id_user ORDER BY timestamp_action) AS session_end
-  FROM `data.1`
+    , LEAD(action) OVER(PARTITION BY id_user ORDER BY timestamp_action) AS next_action
+  FROM `data.task_1`
 )
 WHERE
   action = 'open'
+  AND next_action = 'close'
   AND session_end IS NOT NULL
-  AND session_start >= TIMESTAMP_SUB((SELECT MAX(timestamp_action) FROM `data.1`), INTERVAL 10 DAY)
+  AND session_start >= TIMESTAMP_SUB((SELECT MAX(timestamp_action) FROM `data.task_1`), INTERVAL 10 DAY)
 GROUP BY id_user, session_date
-ORDER BY total_hours DESC, id_user, session_date;
+ORDER BY id_user, session_date;
