@@ -18,8 +18,6 @@
 * `task_2_users_params.csv` — параметри користувачів + таргет `revenue_7d`
 * `task_2_users_actions.csv` — дії користувачів за перший день
 
-Файли надаються разом із завданням (`Test_tasks_DS.pdf`).
-
 Після feature engineering `model.ipynb` зберігає підготовлений датасет у `data/final_data.csv`. Цей файл також не комітиться — його генерує перший ноутбук.
 
 Детальний опис файлів: [data/README.md](data/README.md).
