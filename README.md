@@ -1,14 +1,26 @@
-# Data Science
-
-Цей репозиторій містить виконання тестового завдання на позицію Data Scientist. Завдання складається з двох частин: написання SQL-запиту для аналізу користувацьких сесій та побудови ML-моделі для прогнозування виручки (LTV) за 7 днів.
+# Прогноз Revenue 7D
 
 ## Структура репозиторію
 
-* `query.sql` — рішення Завдання 1 (SQL). Розрахунок часу сесій користувачів.
-* `model.ipynb` — рішення Завдання 2 (ML). Основний пайплайн підготовки даних, навчання двоетапної моделі (Hurdle model) на базі LightGBM та оцінка результатів.
-* `comparison_of_models.ipynb` — порівняння різних ML-алгоритмів (CatBoost, XGBoost, LightGBM, Random Forest) на підготовлених даних.
-* `README.md` — опис архітектури, підходів та прийнятих рішень.
-* `Test_tasks_DS.pdf` — оригінальний файл з умовами тестового завдання.
+* `src/sql/query.sql` — рішення Завдання 1 (SQL). Розрахунок часу сесій користувачів.
+* `src/sql/README.md` — хід думок та прийняті рішення для SQL-частини.
+* `src/ipynb/model.ipynb` — рішення Завдання 2 (ML). Основний пайплайн підготовки даних, навчання двоетапної моделі (Hurdle model) на базі LightGBM та оцінка результатів.
+* `src/ipynb/comparison_of_models.ipynb` — порівняння різних ML-алгоритмів (CatBoost, XGBoost, LightGBM, Random Forest) на підготовлених даних.
+* `data/` — вхідні CSV з завдання та згенерований `final_data.csv` (детальніше — [data/README.md](data/README.md)).
+* `requirements.txt` — залежності Python.
+
+---
+
+## Дані
+
+Вхідні CSV-файли **не включені** в git. Їх потрібно покласти в папку `data/`:
+
+* `task_2_users_params.csv` — параметри користувачів + таргет `revenue_7d`
+* `task_2_users_actions.csv` — дії користувачів за перший день
+
+Після feature engineering `model.ipynb` зберігає підготовлений датасет у `data/final_data.csv`. Цей файл також не комітиться — його генерує перший ноутбук.
+
+Детальний опис файлів: [data/README.md](data/README.md).
 
 ---
 
@@ -59,4 +71,14 @@
 
 1. Клонувати репозиторій.
 2. Встановити залежності: `pip install -r requirements.txt`.
-3. Запустити ноутбуки у порядку: `model.ipynb` -> `comparison_of_models.ipynb`.
+3. Покласти вхідні CSV у `data/` (див. [data/README.md](data/README.md)).
+4. Запустити ноутбуки **у такому порядку**:
+   1. `src/ipynb/model.ipynb` — EDA, feature engineering, навчання Hurdle-моделі; наприкінці підготовки даних зберігає `data/final_data.csv`.
+   2. `src/ipynb/comparison_of_models.ipynb` — порівняння алгоритмів на згенерованому `final_data.csv` (потребує кроку 1).
+
+Запуск з кореня репозиторію:
+
+```bash
+jupyter notebook src/ipynb/model.ipynb
+jupyter notebook src/ipynb/comparison_of_models.ipynb
+```
